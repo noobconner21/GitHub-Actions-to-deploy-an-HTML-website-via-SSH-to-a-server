@@ -1,0 +1,23 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main  # Adjust this to match your main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SECRET_GURA }}
+
+      - name: Deploy website via SSH
+        run: |
+          scp -o StrictHostKeyChecking=no -r ./* server_user_name_here@server_ip_here:/path/to/destination
